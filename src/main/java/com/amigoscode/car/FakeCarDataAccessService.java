@@ -17,18 +17,23 @@ public class FakeCarDataAccessService implements CarDAO {
     }
 
 
-
+    // This function serves 2 purposes:
+    // 1) It is used as a check to make sure the car we are deleting/updating/getting actually exists (see null checks in CarService)
+    // 2) It is used to return the car in the getCarById method in CarService
+    // IMPORTANT: This method doesn't return 0s or 1s as we can determine it's success via the Car Object being returned!!
     @Override
     public Car selectCarById(Integer id) {
-        // Sort this out
         // Check if can find in the DB
         for (Car car : db) {
             if(car.getId() == id){
                 return car;
             }
         }
+        // This null is used for purpose 1 mentioned above
         return null;
     }
+
+
 
     @Override
     public List<Car> selectAllCars() {
@@ -44,8 +49,7 @@ public class FakeCarDataAccessService implements CarDAO {
 
     @Override
     public int deleteCar(Integer id) {
-        // Will need to search for it to delete anyways
-        // BY THIS POINT IT CAN DO IT 100%
+        // BY THIS POINT IT CAN DO IT 100% - All checks have been made in CarService
         Car carToDelete = selectCarById(id);
         db.remove(carToDelete);
         return 1;
@@ -53,7 +57,7 @@ public class FakeCarDataAccessService implements CarDAO {
 
     @Override
     public int updateCar(Integer id, Car update) {
-        // Id to replcae should exist!! at this point !!! as null is checked before
+        // Id to replcae should exist at this point !!! as null is checked in CarService before calling this method
         Car carToUpdate = selectCarById(id);
         carToUpdate.setBrand(update.getBrand());
         carToUpdate.setRegNumber(update.getRegNumber());
