@@ -38,7 +38,7 @@ public class CarService {
 
 
 
-   /* public Car getCarById(Integer id){
+    public Car getCarById(Integer id){
 
         if (id == null){
             throw new IllegalStateException("Id cannot be null");
@@ -48,16 +48,15 @@ public class CarService {
         Car carToGet = carDAO.selectCarById(id);
 
         if(carToGet == null){
-            throw new IllegalStateException("Id cannot be found in the database...");
+            throw new IllegalStateException("Id of Car to get cannot be found in the database...");
+        }else{
+            return carToGet;
         }
 
-        int result =  carDAO.getCarById(id);
+        // NOTE: this function returns a CAR and not an integer (int is returned more for DAO services which are void so as to allow user to know if method was successfull)
+        // Here the success can be determined by whether we return a car or not (no need for 0s and 1s)
 
-        if (result != 1) {
-            throw new IllegalStateException("Could not update car...");
-        }
-
-    }*/
+    }
 
 
 
