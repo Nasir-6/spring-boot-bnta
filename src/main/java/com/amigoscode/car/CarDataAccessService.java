@@ -21,8 +21,30 @@ public class CarDataAccessService implements CarDAO {
     @Override
     public Car selectCarById(Integer id) {
         // todo: implement this method to get car by id from database
-        return null;
+        String sql = """
+                SELECT id, regnumber, brand, price
+                FROM car WHERE id = ?
+                """;
+
+        RowMapper<Car> carRowMapper = (rs, rowNum) -> {
+            return new Car(
+                    rs.getInt("id"),
+                    rs.getString("regnumber"),
+                    Brand.valueOf(rs.getString("brand")),
+                    rs.getDouble("price")
+            );
+        };
+
+        List<Car> cars = jdbcTemplate.query(sql, carRowMapper, id);
+
+        if (cars.isEmpty()){
+            return null;
+        } else {
+            return cars.get(0);
+        }
+
     }
+
 
 
     @Override
@@ -35,13 +57,12 @@ public class CarDataAccessService implements CarDAO {
 
         // carRowMapper is a method/lamda that goes through each row and converts the data into a car Object and returns
         RowMapper<Car> carRowMapper = (rs, rowNum) -> {
-            Car car = new Car(
+            return new Car(
                     rs.getInt("id"),
                     rs.getString("regnumber"),
                     Brand.valueOf(rs.getString("brand")),
                     rs.getDouble("price")
             );
-            return car;
         };
 
         //query combined with carRowMapper will go through the returned sql table, and return a list of cars
@@ -59,6 +80,10 @@ public class CarDataAccessService implements CarDAO {
                 return car;
             });
         */
+
+
+        // Third method from Nelson's video
+
 
         // Return the list of cars -> Service -> API -> Client
         return cars;
@@ -80,7 +105,7 @@ public class CarDataAccessService implements CarDAO {
                 car.getBrand().name(),
                 car.getPrice()
         );
-        // Should return 1 - anything else it should throw error in the service!!
+        // Should return 1 as only 1 row is added - anything else it should throw error in the service!!
         return rowsAffected;
     }
 
@@ -95,6 +120,20 @@ public class CarDataAccessService implements CarDAO {
     @Override
     public int updateCar(Integer id, Car update) {
         // todo: implement this method
-        return 0;
+        // Start with the Sql command
+        String sql = """
+                UPDATE car SET (regnumber, brand, price) = (?, ?, ?)  
+                WHERE id = ?
+                """;
+
+        int rowsAffected = jdbcTemplate.update(
+                sql,
+                update.getRegNumber(),
+                update.getBrand().name(),
+                update.getPrice(),
+                id
+        );
+
+        return rowsAffected;
     }
 }

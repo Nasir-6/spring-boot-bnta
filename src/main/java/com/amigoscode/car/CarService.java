@@ -59,7 +59,11 @@ public class CarService {
         Car carToGet = carDAO.selectCarById(id);
 
         if(carToGet == null){
-            throw new IllegalStateException("Id of Car to get cannot be found in the database...");
+            // The built in exception will return error code 500 saying it is server side error
+            //throw new IllegalStateException("Car to delete not found in db..");
+            // But we want to tell the client it is their fault and the id is not a good request
+            // Replace Exception with our own Exception - This comes with the HTTP.NOT_FOUND error code (CLIENT Error - 404)
+            throw new CarNotFoundException("Car with id " + id + " not found");
         }else{
             return carToGet;
         }
@@ -90,7 +94,11 @@ public class CarService {
         Car carToDelete = carDAO.selectCarById(id);
 
         if (carToDelete == null){
-            throw new IllegalStateException("Car to delete not found in db..");
+            // The built in exception will return error code 500 saying it is server side error
+            //throw new IllegalStateException("Car to delete not found in db..");
+            // But we want to tell the client it is their fault and the id is not a good request
+            // Replace Exception with our own Exception - This comes with the HTTP.NOT_FOUND error code (CLIENT Error - 404)
+            throw new CarNotFoundException("Car with id " + id + " not found");
         }
 
 
@@ -118,6 +126,8 @@ public class CarService {
             throw new IllegalStateException("Car needs a valid Registration number");
         }//TODO: DO CarBrand check with ENums (Create a new method to return boolean flag, isValidBrand
         // CAN DO A CAR BRAND CHECK DO LATER!!!
+
+        // NOTE: No need to check Enums as when constructor occurs - the
 
 
 
