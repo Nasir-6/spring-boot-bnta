@@ -19,6 +19,7 @@ public class CarController {
     }
 
 
+    // NOTE new springboot - has @ResponseBody embedded in @GetMapping annotation!
     @GetMapping(path = "cars")
     public List<Car> getCars() {
         return carService.getCars();
@@ -28,11 +29,11 @@ public class CarController {
     // TODO: ---------------------------------------------------------
 
 //    // DO THIS
-//    @GetMapping(path = "cars/{id}")
-//    public Car getCarById(@PathVariable("id") Integer carId) {
-//        // GET CAR BY ID
-//        return carService.getCarById(carId);
-//    }
+    @GetMapping(path = "cars/{id}")
+    public Car getCarById(@PathVariable("id") Integer carId) {
+        // GET CAR BY ID
+        return carService.getCarById(carId);
+    }
 
     // TODO: ---------------------------------------------------------
 
@@ -50,14 +51,12 @@ public class CarController {
 
 
     //    int updateCar(Integer id, Car update)
-    // Take in the id and get repsonsbody
+    // Take in the id and get REQUESTbody (NOT RESPONSE
     //@ResponseBody   // response is not needed here as GETCAR will give you it back when you get
     @PutMapping(path = "cars/{id}")
     public void updateCar(@PathVariable("id") Integer id, @RequestBody Car update) {
         carService.updateCar(id, update);
     }
-
-
 
 
 }

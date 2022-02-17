@@ -66,10 +66,8 @@ public class CarService {
 
 
     // DO logic for
-    // Each one calls the carservice
     //Car selectCarById(Integer id);
     // Do checks here - check That id exists in the table
-    //
     public void deleteCar(Integer id){
 
         if (id == null){
@@ -77,13 +75,12 @@ public class CarService {
         }
 
         // TODO:Add in if car exists in DB ---- TURN THIS INTO A METHOD
+        // Don't turn into a method for readability sake
         Car carToDelete = carDAO.selectCarById(id);
 
         if (carToDelete == null){
             throw new IllegalStateException("Car to delete not found in db..");
         }
-
-        //TODO -----------------------
 
 
         int result =  carDAO.deleteCar(id);
@@ -108,11 +105,12 @@ public class CarService {
         }
 
         // TODO:Add in if car exists in DB ---- TURN THIS INTO A METHOD
+        // ACTUALLY don't turn it into a method for readability's sake
         // This is checking if id exists - so can actually replace
-        Car carToReplace = carDAO.selectCarById(id);
+        Car carToUpdate = carDAO.selectCarById(id);
 
-        if(carToReplace == null){
-            throw new IllegalStateException("Id cannot be found in the database...");
+        if(carToUpdate == null){
+            throw new IllegalStateException("Car to update Id cannot be found in the database...");
         }
 
 
